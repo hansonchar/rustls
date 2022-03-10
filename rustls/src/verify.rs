@@ -499,8 +499,11 @@ impl ClientCertVerifier for AllowAnyAuthenticatedClient {
         intermediates: &[Certificate],
         now: SystemTime,
     ) -> Result<ClientCertVerified, Error> {
+        println!("verify_client_cert begins");
         let (cert, chain, trustroots) = prepare(end_entity, intermediates, &self.roots)?;
+        println!("verify_client_cert prepared");
         let now = webpki::Time::try_from(now).map_err(|_| Error::FailedToGetCurrentTime)?;
+        println!("verify_client_cert cert.verify_is_valid_tls_client_cert");
         cert.verify_is_valid_tls_client_cert(
             SUPPORTED_SIG_ALGS,
             &webpki::TlsClientTrustAnchors(&trustroots),
