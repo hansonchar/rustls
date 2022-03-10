@@ -566,6 +566,7 @@ impl ClientCertVerifier for AllowAnyAnonymousOrAuthenticatedClient {
 
 fn pki_error(error: webpki::Error) -> Error {
     use webpki::Error::*;
+    println!("pki_error:: error: {:?}", error);
     match error {
         BadDer | BadDerTime => Error::InvalidCertificateEncoding,
         InvalidSignatureForPublicKey => Error::InvalidCertificateSignature,
