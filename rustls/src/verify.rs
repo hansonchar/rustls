@@ -453,19 +453,23 @@ fn prepare<'a, 'b>(
     roots: &'b RootCertStore,
 ) -> Result<CertChainAndRoots<'a, 'b>, Error> {
     // EE cert must appear first.
+    println!("prepare begins");
     let cert = webpki::EndEntityCert::try_from(end_entity.0.as_ref()).map_err(pki_error)?;
 
+    println!("prepare:: intermediates");
     let intermediates: Vec<&'a [u8]> = intermediates
         .iter()
         .map(|cert| cert.0.as_ref())
         .collect();
 
+    println!("prepare:: trustroots");
     let trustroots: Vec<webpki::TrustAnchor> = roots
         .roots
         .iter()
         .map(OwnedTrustAnchor::to_trust_anchor)
         .collect();
 
+    println!("prepare:: ending");
     Ok((cert, intermediates, trustroots))
 }
 
